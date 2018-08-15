@@ -1,0 +1,5 @@
+*.root
+*.txt
+
+setup_prod.sh
+nohup.out
