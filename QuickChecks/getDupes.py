@@ -10,15 +10,21 @@ outFileName = inFilePref + "_dupes.txt"
 
 
 # Load array of (evtNum, file index)
-print("Loading", inFileName, "into numpy array...") 
+print("Loading", inFileName, "into numpy array...", end='') 
 sys.stdout.flush()
+stTime = time.clock()
 allEvts = np.loadtxt(inFileName, dtype=[('entryIdx', np.uint64), ('fileIdx', np.uint16), ('evtNum', np.uint64)])
+elTime = time.clock() - stTime
+print(elTime, "seconds")
 
 
 # Get array of duplicates 
-print("Processing numpy.unique...")
+print("Processing numpy.unique...", end='')
 sys.stdout.flush()
+stTime = time.clock()
 _, uniqIdx = np.unique(allEvts['evtNum'], return_index=True)
+elTime = time.clock() - stTime
+print(elTime, "seconds")
 dupEvts = np.delete(allEvts, uniqIdx)
 
 
