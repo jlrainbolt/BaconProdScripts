@@ -26,7 +26,7 @@ void printEvtNum(const TString rootFilePref, const UInt_t startIdx, const UInt_t
     // Loop over ROOT files
     TString eosPath = "root://cmsxrootd.fnal.gov/";
     UInt_t nEvents = 0;
-    for (unsigned i = startIdx; i < nFiles - startIdx; i++)
+    for (unsigned i = startIdx; i < nFiles + startIdx; i++)
     {
         TString rootFileName;
         rootFileName.Form(rootFilePref + "_%i.root", i);

@@ -1,6 +1,7 @@
 from __future__ import print_function
 import numpy as np
 import sys
+import time
 
 
 inFilePref = sys.argv[1]
@@ -12,15 +13,22 @@ outFilePref = inFilePref + "_EventList"
 
 
 # Load array of (entryIdx, fileIdx, evtNum)
-print("Loading", inFileName, "into numpy array...") 
+print("Loading", inFileName, "into numpy array...", end='') 
 sys.stdout.flush()
+stTime = time.clock()
 allEvts = np.loadtxt(inFileName, dtype=[('entryIdx', np.uint64), ('fileIdx', np.uint16), ('evtNum', np.uint64)])
+elTime = time.clock() - stTime
+print(elTime, "seconds")
+
 
 
 # Get array indices of unique events (prefers low fileIdx)
-print("Processing numpy.unique...")
+print("Processing numpy.unique...", end='')
 sys.stdout.flush()
+stTime = time.clock()
 _, uniqIdx = np.unique(allEvts['evtNum'], return_index=True)
+elTime = time.clock() - stTime
+print(elTime, "seconds")
 
 
 # Find number of duplicated events
@@ -30,7 +38,7 @@ if (nDup == 0):
 
 # Yikes, now we have to deal with them
 else:
-    print("Found", nDup, "total duplicated events\n") 
+    print("Found", nDup, "total duplicated events", end='\n\n') 
 
     # Make complete array of unique events
     uniqEvts = allEvts[uniqIdx]

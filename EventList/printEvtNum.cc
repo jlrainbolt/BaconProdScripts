@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "TError.h"
 #include "TString.h"
 #include "TFile.h"
 #include "TTree.h"
@@ -13,18 +14,19 @@ using namespace std;
 
 
 
-void printLumiSec(const UInt_t badLumiSec, const TString rootFilePref, const UInt_t nFiles, const UInt_t minIdx, const TString inDir)
+void printEvtNum(const TString rootFilePref, const UInt_t startIdx, const UInt_t nFiles, const TString inDir)
 {
+    gErrorIgnoreLevel = kFatal;
+
     // Output text file
-    TString textFileName;
-    textFileName.Form(rootFilePref + "_%i.txt", badLumiSec);
+    TString textFileName = rootFilePref + "_EvtNum.txt";
     fstream buff(textFileName, fstream::out);
 
 
     // Loop over ROOT files
     TString eosPath = "root://cmsxrootd.fnal.gov/";
     UInt_t nEvents = 0;
-    for (unsigned i = minIdx; i < nFiles + minIdx; i++)
+    for (unsigned i = startIdx; i < nFiles + startIdx; i++)
     {
         TString rootFileName;
         rootFileName.Form(rootFilePref + "_%i.root", i);
@@ -35,16 +37,14 @@ void printLumiSec(const UInt_t badLumiSec, const TString rootFilePref, const UIn
 
 
         // Loop over events
-        if (i == minIdx)
-            cout << endl;
-        cout << "Processing " << rootFileName << "..." << flush;
+        // Print event index (for current tree), file index (for current file), and event number (global)
+        cout << "Reading " << rootFileName << "..." << flush;
 
         UInt_t eventCount = 0;
         while (reader.Next())
         {
             eventCount++;
-            if (fInfo->lumiSec == badLumiSec)
-                buff << fInfo->evtNum << '\t' << i << endl;
+            buff << reader.GetCurrentEntry() << '\t' << i << '\t' << fInfo->evtNum << endl;
         }
         cout << eventCount << " events" << endl;
 
@@ -59,5 +59,5 @@ void printLumiSec(const UInt_t badLumiSec, const TString rootFilePref, const UIn
 
     cout << endl;
     cout << "Ran over " << nEvents << " total events" << endl;
-    cout << "Wrote output to " << textFileName << endl;
+    cout << "Wrote output to " << textFileName << endl << endl << endl;
 }
