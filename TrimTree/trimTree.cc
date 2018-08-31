@@ -53,7 +53,7 @@ void trimTree(const TString filePref, const UInt_t fileIdx)
 
     // Grab everything from input file
     cout << "Loading contents from " << inFileName << "..." << endl;
-    TFile *inFile = TFile::Open(inFileName);
+    TFile *inFile = new TFile(inFileName);
     TTree *inTree, *inXS;
     inFile->GetObject("Events", inTree);
     inFile->GetObject("xs", inXS);
@@ -66,22 +66,27 @@ void trimTree(const TString filePref, const UInt_t fileIdx)
     // Create new file and copy everything over
     cout << "Copying trimmed contents to " << outFileName << "..." << endl;
     TFile *outFile = new TFile(outFileName, "RECREATE");
+    gROOT->cd();
     TTree *outTree = inTree->CopyTree("");
     TTree *outXS = inXS->CopyTree("");
 
 
     // Correct TotalEvents histogram
+    cout << "Adjusting TotalEvents histogram..." << endl;
     TH1D *outHist;
     inFile->GetObject("TotalEvents", outHist);
     outHist->SetDirectory(0);
     outHist->SetBinContent(1, nEvts);
     outHist->SetEntries(nEvts);
 
+
+    // Write to file
+    cout << "Writing and closing " << outFileName << "..." << endl;
     outHist->Write();
     outTree->Write();
     outXS->Write();
 //  outFile->Purge();
     outFile->Close();
-    inFile->Close();
+//  inFile->Close();
     cout << "Done!" << endl << endl << endl;
 }

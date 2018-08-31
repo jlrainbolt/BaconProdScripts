@@ -7,6 +7,7 @@
 #include "TEventList.h"
 #include "TH1.h"
 
+#include "BLT/BLTAnalysis/interface/BLTHelper.hh"
 // #include "BaconAna/DataFormats/interface/TEventInfo.hh"
 
 //using namespace baconhep;
@@ -52,6 +53,6 @@ void trimLumi(const TString filePref, const UInt_t fileIdx)
     outXS->Write();
 //  outFile->Purge();
     outFile->Close();
-    inFile->Close();
+//  inFile->Close();
     cout << "Done!" << endl << endl << endl;
 }

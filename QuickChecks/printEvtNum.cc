@@ -44,7 +44,8 @@ void printEvtNum(const TString rootFilePref, const UInt_t startIdx, const UInt_t
         while (reader.Next())
         {
             eventCount++;
-            buff << reader.GetCurrentEntry() << '\t' << i << '\t' << fInfo->evtNum << endl;
+            buff << reader.GetCurrentEntry() << '\t' << i << '\t';
+            buff << fInfo->evtNum << '\t' << fInfo->runNum << endl;
         }
         cout << eventCount << " events" << endl;
 

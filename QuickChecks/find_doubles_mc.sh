@@ -27,4 +27,4 @@ root.exe -q -b "printEvtNum.cc(\"${filePref}\", ${startIdx}, ${nFiles}, \"${inpu
 #   Reads in "${filePref}_evtNum.txt"
 #   Writes out only the lines for duplicated events to "${filePref}_dupes.txt"
 #   Also prints total number of duplicates found
-python getDupes.py ${filePref}
+python getDupesMC.py ${filePref}

@@ -1,6 +1,7 @@
 from __future__ import print_function
 import numpy as np
 import sys
+import time
 
 
 inFilePref = sys.argv[1]
@@ -13,7 +14,8 @@ outFileName = inFilePref + "_dupes.txt"
 print("Loading", inFileName, "into numpy array...", end='') 
 sys.stdout.flush()
 stTime = time.clock()
-allEvts = np.loadtxt(inFileName, dtype=[('entryIdx', np.uint64), ('fileIdx', np.uint16), ('evtNum', np.uint64)])
+allEvts = np.loadtxt(inFileName, usecols=(0, 1, 2), \
+            dtype=[('entryIdx', np.uint64), ('fileIdx', np.uint16), ('evtNum', np.uint64)])
 elTime = time.clock() - stTime
 print(elTime, "seconds")
 
