@@ -8,7 +8,7 @@ targName=$3
 srcDir=$4
 targDir=$5
 
-files=($(eval xrdfs root://cmseos.fnal.gov ls -u ${srcDir} \| grep '${srcName}'))
+files=($(eval xrdfs root://cmseos.fnal.gov ls -u ${srcDir} \| grep '${srcName}' \| sort -V))
 nSource=${#files[@]}
 #nSource=$(eos root://cmseos.fnal.gov ls -1 ${srcDir}/${srcName}_*.root | wc -l)
 nHadd=$((nSource / nTarget))
